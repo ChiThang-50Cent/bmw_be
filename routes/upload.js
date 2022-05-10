@@ -28,15 +28,6 @@ router.post("/upload", auth, authAdmin, async(req, res) => {
             return res.status(400).json({ msg: "File format is incorrect." });
         }
 
-        // cloudinary.v2.uploader.upload(
-        //     file.tempFilePath, { folder: "MERN-Ecommerce" },
-        //     async(err, result) => {
-        //         if (err) throw err;
-
-        //
-        //     }
-        // );
-
         const result = await cloudinary.v2.uploader.upload(file.tempFilePath, {
             folder: "MERN-Ecommerce",
         });
