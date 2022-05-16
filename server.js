@@ -22,20 +22,23 @@ app.use(
 app.use(sanitize);
 
 app.use(
-      express.static(path.join(__dirname, "./client/build"))
-    );
+    express.static(path.join(__dirname, "./client/build"))
+);
 
+ 
 // Routes
 app.use("/user", require("./routes/userRouter"));
 app.use("/api", require("./routes/categoryRouter"));
 app.use("/api", require("./routes/upload"));
 app.use("/api", require("./routes/productRouter"));
 app.use("/api", require("./routes/paymentRouter"));
+
 app.get("*", (req, res) => {
-      res.sendFile(
-        path.join(__dirname, "./client/build/index.html")
-      );
-    });
+     res.sendFile(
+     path.join(__dirname, "./client/build/index.html")
+    );
+  });
+
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL;
