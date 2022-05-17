@@ -26,7 +26,7 @@ app.use(sanitize);
 // );
 
 app.use((req, res, next)=>{
-	console.log(req.method, req.originalUrl);
+	console.log(req.get('host'), req.originalUrl);
 	next();
 })
  
