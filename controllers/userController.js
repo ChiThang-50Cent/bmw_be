@@ -2,6 +2,7 @@ const Users = require("../models/userModel");
 const Payments = require("../models/paymentModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const userController = {
     register: async(req, res) => {
@@ -40,7 +41,7 @@ const userController = {
     login: async(req, res) => {
         try {
             const { email, password } = req.body;
-
+		
             const user = await Users.findOne({ email });
             if (!user) return res.status(400).json({ msg: "User does not exist." });
 
@@ -67,7 +68,8 @@ const userController = {
     },
     refreshToken: (req, res) => {
         try {
-            const rf_token = req.header("cookie");
+            const {cookie} = req.body;
+			const rf_token = cookie.split('=')[1];
             console.log(rf_token);
             if (!rf_token)
                 return res.status(400).json({ msg: "Please Login or Register." });
