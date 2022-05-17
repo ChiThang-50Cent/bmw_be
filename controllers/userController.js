@@ -32,13 +32,7 @@ const userController = {
             const accesstoken = createAccessToken({ id: newUser._id });
             const refreshtoken = createRefreshToken({ id: newUser._id });
 
-            res.cookie("refreshtoken", refreshtoken, {
-                httpOnly: true,
-                path: "/user/refresh_token",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            });
-
-            res.json({ accesstoken });
+            res.json({ accesstoken, refreshtoken });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -46,11 +40,10 @@ const userController = {
     login: async(req, res) => {
         try {
             const { email, password } = req.body;
-			
 
             const user = await Users.findOne({ email });
             if (!user) return res.status(400).json({ msg: "User does not exist." });
-			
+
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) return res.status(400).json({ msg: "Incorrect password." });
 
@@ -58,14 +51,7 @@ const userController = {
             const accesstoken = createAccessToken({ id: user._id });
             const refreshtoken = createRefreshToken({ id: user._id });
 
-            // res.cookie("refreshtoken", refreshtoken , {
-                // httpOnly: true,
-                // path: "/user/refresh_token",
-                // maxAge: 7 * 24 * 60 * 60 * 1000,
-            // });
-			res.cookie("refreshtoken", refreshtoken)
-
-            res.json({ accesstoken });
+            res.json({ accesstoken, refreshtoken });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -81,8 +67,8 @@ const userController = {
     },
     refreshToken: (req, res) => {
         try {
-            const rf_token = req.cookies.refreshtoken;
-			console.log(req.cookies)
+            const rf_token = req.header("cookie");
+            console.log(rf_token);
             if (!rf_token)
                 return res.status(400).json({ msg: "Please Login or Register." });
 
