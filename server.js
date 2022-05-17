@@ -22,8 +22,13 @@ app.use(
 app.use(sanitize);
 
 // app.use(
-//       express.static(path.join(__dirname, "./client/build"))
-//     );
+// express.static(path.join(__dirname, "./client/build"))
+// );
+
+app.use((req, res, next) => {
+    console.log(req.get("host"), req.originalUrl);
+    next();
+});
 
 // Routes
 app.use("/user", require("./routes/userRouter"));
@@ -33,10 +38,10 @@ app.use("/api", require("./routes/productRouter"));
 app.use("/api", require("./routes/paymentRouter"));
 
 // app.get("*", (req, res) => {
-//       res.sendFile(
-//         path.join(__dirname, "./client/build/index.html")
-//       );
-//     });
+// res.sendFile(
+// path.join(__dirname, "./client/build/index.html")
+// );
+// });
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL;

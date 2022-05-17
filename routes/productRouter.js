@@ -11,7 +11,7 @@ router
 
 router
     .route("/products/:id")
-    .delete(auth, authAdmin, verify_cs_token, productController.deleteProduct)
+    .delete(productController.deleteProduct)
     .put(auth, authAdmin, verify_cs_token, productController.updateProduct);
 
 module.exports = router;
