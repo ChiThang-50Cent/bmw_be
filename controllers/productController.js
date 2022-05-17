@@ -14,7 +14,7 @@ class APIfeatures {
         excludedFields.forEach((el) => delete queryObj[el]);
 
         queryObj.title = {
-            $regex: queryObj.title,
+            $regex: queryObj.title || "",
         };
 
         this.query.find(queryObj);
