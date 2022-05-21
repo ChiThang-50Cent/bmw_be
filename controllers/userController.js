@@ -32,8 +32,14 @@ const userController = {
             // Create jsonwebtoken to authentication
             const accesstoken = createAccessToken({ id: newUser._id });
             const refreshtoken = createRefreshToken({ id: newUser._id });
+			
+			res.cookie("refreshtoken", refreshtoken, {
+                httpOnly: true,
+                path: "/user/refresh_token",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            });
 
-            res.json({ accesstoken, refreshtoken });
+            res.json({ accesstoken });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -51,8 +57,14 @@ const userController = {
             // If login success, create accesstoken and refreshtoken
             const accesstoken = createAccessToken({ id: user._id });
             const refreshtoken = createRefreshToken({ id: user._id });
-
-            res.json({ accesstoken, refreshtoken });
+			
+			res.cookie("refreshtoken", refreshtoken, {
+                httpOnly: true,
+                path: "/user/refresh_token",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            });
+			
+            res.json({ accesstoken });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -68,9 +80,8 @@ const userController = {
     },
     refreshToken: (req, res) => {
         try {
-            const {cookie} = req.body;
-			const rf_token = cookie.split('=')[1];
-            console.log(rf_token);
+			const rf_token = req.cookies.refreshtoken
+
             if (!rf_token)
                 return res.status(400).json({ msg: "Please Login or Register." });
 

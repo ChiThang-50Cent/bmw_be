@@ -25,10 +25,10 @@ app.use(
 // Filter input query
 app.use(sanitize);
 
-app.use((req, res, next) => {
-    console.log(req.get("host"), req.originalUrl);
-    next();
-});
+// app.use((req, res, next) => {
+    // console.log(req.get("host"), req.originalUrl);
+    // next();
+// });
 
 // Routes
 app.use("/user", require("./routes/userRouter"));

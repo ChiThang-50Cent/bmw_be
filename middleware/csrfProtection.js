@@ -20,7 +20,8 @@ const get_cs_token = (req, res, next) => {
 };
 
 const verify_cs_token = (req, res, next) => {
-    const _token = req.header("_token");
+    const {_token }= req.body;
+	
     if (!_token) return res.status(400).json({ msg: "Token not found." });
 
     try {
